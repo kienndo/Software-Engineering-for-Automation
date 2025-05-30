@@ -36,7 +36,7 @@ export default function Home() {
     fetchTrips();
   }, [nav]);
 
-  const future = trips.filter(t => isFuture(t.start_date));
+  const future = trips.filter(t => isFuture(t.end_date));
   const past = trips.filter(t => !isFuture(t.end_date));
   const myUserId = Number(localStorage.getItem("user_id"));
 
@@ -71,6 +71,12 @@ export default function Home() {
     setEndDate("");
     setShowPopup(false);
   }
+
+  const todaysDateAsString = () => {
+    const today = new Date();
+    today.setHours(today.getHours() + 2); // Adjust from UTC to Milan time
+    return today.toISOString().split("T")[0];
+  };
 
   return (
     <div className={styles.homePage}>
@@ -121,10 +127,10 @@ export default function Home() {
                       rows={3}
                     />
                     <label>Start Date</label>
-                    <input type="date" value={startDate} required
+                    <input type="date" min={todaysDateAsString()} value={startDate} required
                            onChange={e=>setStartDate(e.target.value)} />
                     <label>End Date</label>
-                    <input type="date" value={endDate} required
+                    <input type="date" min={startDate} value={endDate} required
                            onChange={e=>setEndDate(e.target.value)} />
                   </div>
                   <div className="popup-actions">

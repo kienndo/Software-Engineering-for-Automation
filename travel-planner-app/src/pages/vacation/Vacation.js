@@ -148,6 +148,12 @@ export default function VacationOverview() {
   if (err) return <p>{err}</p>;
   if (!trip) return <p>Loading…</p>;
 
+  const todaysDateAsString = () => {
+    const today = new Date();
+    today.setHours(today.getHours() + 2); // Adjust from UTC to Milan time
+    return today.toISOString().split("T")[0];
+  };
+
   return (
     <div className={styles.vacationPage}>
       <div className="left-column">
@@ -269,6 +275,7 @@ export default function VacationOverview() {
               Start date:
               <input
                 type="date"
+                min = {todaysDateAsString()}
                 value={editedStartDate}
                 onChange={(e) => setEditedStartDate(e.target.value)}
               />
@@ -277,6 +284,7 @@ export default function VacationOverview() {
               End date:
               <input
                 type="date"
+                min={editedStartDate}
                 value={editedEndDate}
                 onChange={(e) => setEditedEndDate(e.target.value)}
               />
