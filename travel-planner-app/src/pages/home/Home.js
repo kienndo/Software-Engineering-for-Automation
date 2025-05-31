@@ -22,6 +22,10 @@ export default function Home() {
     return inputDate >= today;
   };
 
+  const handleLogout = () => {
+    nav("/login");
+  }
+
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -141,7 +145,7 @@ export default function Home() {
 
       <div className="right-column">
         <div className={styles.logOut}>
-          <p>LOG OUT</p>
+          <p onClick={handleLogout}> LOG OUT</p>
         </div>
 
         <div className={styles.responsibilities}>
