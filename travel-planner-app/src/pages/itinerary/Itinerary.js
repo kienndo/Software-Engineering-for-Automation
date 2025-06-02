@@ -69,7 +69,7 @@ export default function Itinerary() {
   useEffect(() => {
     if (!events || uniqueDates == []) return;
 
-    events.map(event => {
+    events.forEach(event => {
       if (!((suggestions.find(suggestion => suggestion && suggestion.suggestion_id === event.event_id)) ||
             (calendarSlots.find(suggestionCard => suggestionCard && suggestionCard.suggestion_id === event.event_id)))) {
 
@@ -197,6 +197,7 @@ export default function Itinerary() {
 
   const deleteSuggestion = async (id) => {
     setSuggestions(prev => prev.filter(s => s.suggestion_id !== id));
+    setEvents(prev => prev.filter(e => e.event_id !== id))
 
     try {
       await api(`/trips/${tripId}/events/${id}/`, {method: "DELETE"});
@@ -213,6 +214,8 @@ export default function Itinerary() {
     const t = [...calendarSlots];
     t[idx] = null;
     setCalendarSlots(t);
+
+    setEvents(prev => prev.filter(e => e.event_id !== item.suggestion_id));
 
     try {
       await api(`/trips/${tripId}/events/${item.suggestion_id}/`, {method: "DELETE"});
