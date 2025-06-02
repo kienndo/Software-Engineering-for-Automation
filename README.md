@@ -9,7 +9,11 @@ python3 -m venv venv
 source venv/bin/activate 
 ```
 
-Install git if necessary. Then, clone into the repo (skipping now, we will have to see which branch ends up being the final one).
+Install git if necessary. Then, clone into the repo: 
+
+```bash
+git clone git@github.com:kienndo/SE4A_KienNinhDo_JulieRonesenLandaas_OleMandiusHarmThorrud.git
+```
 
 When cloned into the repo, navigate to the root folder:
 
