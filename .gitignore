@@ -2,10 +2,8 @@
 __pycache__/
 .env
 
-# Database and migrations
-db.sqlite3
-**/migrations/*
-!**/migrations/__init__.py
+# Pycache
+**/migrations/__pycache__/
 
 # Virtual environment
 .venv
