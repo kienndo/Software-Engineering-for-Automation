@@ -8,11 +8,16 @@ Open your favourite code editor, and create a virtual environment. Start it up:
 python3 -m venv venv
 source venv/bin/activate 
 ```
+If you are using Windows, do it by pasting this in the terminal:
+```bash
+python3 -m venv venv
+venv/bin/activate 
+```
 
 Install git if necessary. Then, clone into the repo: 
 
 ```bash
-git clone git@github.com:kienndo/SE4A_KienNinhDo_JulieRonesenLandaas_OleMandiusHarmThorrud.git
+git clone https://github.com/kienndo/SE4A_KienNinhDo_JulieRonesenLandaas_OleMandiusHarmThorrud.git
 ```
 
 When cloned into the repo, navigate to the root folder:
@@ -27,7 +32,7 @@ Once here, you can install the requirements.
 pip install -r requirements.txt
 ```
 
-Create a `.env` file with the following contents (copy and paste the entire command):
+Create a `.env` file by pasting the following contents in the terminal:
 
 ```bash
 echo "SECRET_KEY='django-insecure-@xxum1*m@4c)rzux6qgn3r70)\$7ry1^$_a-l+c=7ftc*hlxt-^'
@@ -44,9 +49,9 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Now, we are ready to get the frontend up and running.
+Now, we are ready to get the frontend up and running. 
 
-Run:
+Open a new terminal and run:
 
 ```bash
 cd travel-planner-app
