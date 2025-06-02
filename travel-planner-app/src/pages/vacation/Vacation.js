@@ -13,7 +13,7 @@ export default function VacationOverview() {
   const [currentUserParticipantId, setCurrentUserParticipantId] = useState(null);
 
   const [addParticipantPopup, setAddParticipantPopup] = useState(false);
-  const [userIdToAdd, setUserIdToAdd] = useState('');
+  const [usernameToAdd, setUsernameToAdd] = useState('');
   const [addParticipantError, setAddParticipantError] = useState(null);
   const [addParticipantSuccess, setAddParticipantSuccess] = useState('');
   const [isSubmittingParticipant, setIsSubmittingParticipant] = useState(false);
@@ -67,7 +67,6 @@ export default function VacationOverview() {
     fetchExternalInfo();
   }, [trip, tripId]);
 
-
   const handleAddParticipantSubmit = async (e) => {
     if (e) 
       e.preventDefault(); 
@@ -76,12 +75,10 @@ export default function VacationOverview() {
     setAddParticipantSuccess('');
     setIsSubmittingParticipant(true);
 
-    const userId = Number(userIdToAdd);
-
     try {
       const newParticipant = await api(`/trips/${tripId}/participants/`, {
         method: 'POST',
-        body: {user: userId},
+        body: {username_to_add: usernameToAdd},
       });
       
       setTrip(prev => ({
@@ -90,7 +87,7 @@ export default function VacationOverview() {
       }));
 
       setAddParticipantSuccess(`User ${newParticipant.username} added successfully!`);
-      setUserIdToAdd(''); 
+      setUsernameToAdd(''); 
 
       setTimeout(() => {
         setAddParticipantPopup(false);
@@ -103,7 +100,7 @@ export default function VacationOverview() {
 
       let errorMessage = 'Failed to add participant. Please try again.';
       setAddParticipantError(errorMessage);
-      setUserIdToAdd(''); 
+      setUsernameToAdd(''); 
       setIsSubmittingParticipant(false);
       console.error("Add participant error:", err);
     } 
@@ -116,7 +113,7 @@ export default function VacationOverview() {
 
   const handleUpdateTrip = async () => {
 
-      const updatedTrip = await api(`/trips/${tripId}/`, {
+      const updatedTrip = await api( `/trips/${tripId}/`, {
         method: 'PATCH',
         body: {
           name: editedName,
@@ -168,24 +165,28 @@ export default function VacationOverview() {
         </div>
 
         {externalEvents.length > 0 && (
-          <div className={styles.weatherBox}>
-            <h3>WHAT’S ON</h3>
-            <ul>
-              {externalEvents.map(ev => (
-                <li key={ev.url}>
-                  <a
-                    href={ev.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.eventTitle}
-                  >
-                    {ev.name} <span className={styles.eventDate}>({ev.date})</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+  <div className={styles.exInfoBox}>
+    <h3>WHAT’S ON</h3>
+    <ul>
+      {typeof externalEvents[0] === 'string' ? (
+        <li>{externalEvents[0]}</li>
+      ) : (
+        externalEvents.map(ev => (
+          <li key={ev.url}>
+            <a
+              href={ev.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.eventTitle}
+            >
+              {ev.name} <span className={styles.eventDate}>({ev.date})</span>
+            </a>
+          </li>
+        ))
+      )}
+    </ul>
+  </div>
+)}
       </div>
 
       <div className="right-column">
@@ -233,14 +234,12 @@ export default function VacationOverview() {
             <p>No expenses yet</p>
           )}
         </div>
-
         {weatherSummary && (
-          <div className={styles.weatherBox}>
+          <div className={styles.exInfoBox}>
             <h3>WEATHER</h3>
             <p>{weatherSummary}</p>
           </div>
         )}
-
       </div>
 
     {editVacation && (
@@ -307,13 +306,13 @@ export default function VacationOverview() {
             <popup-title>Add New Participant</popup-title>
             <form onSubmit={handleAddParticipantSubmit}>
               <div className="form-group">
-                <label htmlFor="userId">User ID to Add:</label>
+                <label htmlFor="username">Who do you want to add?:</label>
                 <input
                   type="text"
-                  id="userId"
-                  value={userIdToAdd}
-                  onChange={(e) => setUserIdToAdd(e.target.value)}
-                  placeholder="Enter User ID"
+                  id="username"
+                  value={usernameToAdd}
+                  onChange={(e) => setUsernameToAdd(e.target.value)}
+                  placeholder="Enter username"
                   disabled={isSubmittingParticipant}
                 />
               </div>
