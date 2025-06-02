@@ -8,8 +8,8 @@
 
 .calendarGrid {
   display: flex;
+  overflow-x: auto;
   gap: 30px;
-  flex-wrap: wrap;
   width: 950px;
   margin-top: 10px;
 }
