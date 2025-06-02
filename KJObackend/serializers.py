@@ -48,7 +48,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
         fields = ['expense_id', 'trip_id', 'amount', 'description', 'paid_by', 'shared_between']
 
 class TripSerializer(serializers.ModelSerializer):
-    trip_id = serializers.IntegerField(source='id', read_only=True)  # Add this line
+    trip_id = serializers.IntegerField(source='id', read_only=True) 
     owner = serializers.PrimaryKeyRelatedField(read_only=True)
     owner_username = serializers.StringRelatedField(source='owner.username', read_only=True)
     participants = ParticipantSerializer(source='trip_participants', many=True, read_only=True)

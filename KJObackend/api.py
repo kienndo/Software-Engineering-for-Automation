@@ -97,17 +97,9 @@ class ParticipantListCreateAPI(generics.ListCreateAPIView):
         if not trip.participants.filter(id=self.request.user.id).exists():
             raise PermissionDenied("Only participants can add other participants")
 
-        username = self.request.data.get('username_to_add')
-        if not username:
-            raise ValidationError({'username_to_add': 'This field is required.'})
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            raise ValidationError({'username_to_add': 'User not found.'})
+        serializer.save(trip=trip)
 
-        serializer.save(user=user, trip=trip)
-
-        # Update the already existing expenses to include all participants
+        # Update the already existing expenses to include all participants, sharing every expense equally
         all_participants = Participant.objects.filter(trip=trip)
         for expense in trip.expenses.all():
             expense.shared_between.set(all_participants)
@@ -122,7 +114,7 @@ class ParticipantDetailAPI(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied("Only participants can see or delete other participants")
         return get_object_or_404(Participant, id=self.kwargs["participant_id"], trip=trip)
     
-    # Override to prevent participants from being edited
+    # Override to make sure participants can't be edited
     def put(self, request, *args, **kwargs):
         return Response({'detail': 'Editing participants is not allowed.'})
 
@@ -144,7 +136,6 @@ class ExpenseListCreateAPI(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         trip = get_object_or_404(Trip, id=self.kwargs['trip_id'])
         
-            # Only participants can add expenses
         if not trip.participants.filter(id=self.request.user.id).exists():
             raise PermissionDenied("Only participants can add expenses")
             
@@ -228,5 +219,5 @@ class ExternalInfoAPI(APIView):
             'events': events,
             'weather_interpretation': weather_interpretation
         }
-        print(response_data)
+        print("Here is the response data: ", response_data)
         return Response(response_data)
