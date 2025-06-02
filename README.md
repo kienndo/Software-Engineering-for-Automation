@@ -2,7 +2,7 @@
 
 First, create a new folder to house your virtual environment.
 
-Open your favourite code editor, and create a virtual environment. Start it up:
+Open your favourite code editor, and create a virtual environment (MacOS). Start it up:
 
 ```bash
 python3 -m venv venv
