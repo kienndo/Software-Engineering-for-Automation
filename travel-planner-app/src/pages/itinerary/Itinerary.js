@@ -18,7 +18,6 @@ export default function Itinerary() {
   const [dragSource, setDragSource] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
   const [newName, setNewName] = useState("");
-  const [newDate, setNewDate] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uniqueDates, setUniqueDates] = useState([]);
@@ -120,7 +119,6 @@ export default function Itinerary() {
     .then(ev => {
       setEvents(prev => [...prev, ev]);
       setNewName("");
-      setNewDate("");
       setNewDescription("");
       setPopupOpen(false);
     })
@@ -140,7 +138,6 @@ export default function Itinerary() {
 
   const handleDropToSlot = async (targetDate, slotIdx) => {
     if (!draggedItem || calendarSlots[slotIdx] !== null) return;
-    setNewDate(targetDate);
 
     if (dragSource === "suggestion") {
       setCalendarSlots(prev => {
@@ -163,7 +160,7 @@ export default function Itinerary() {
     try {
       await api(`/trips/${tripId}/events/${draggedItem.suggestion_id}/`, {
         method: "PATCH",
-        body: {date: newDate}
+        body: {date: targetDate}
       });
     } catch (e) {
       console.error("Update date failed:", e);
@@ -282,7 +279,7 @@ export default function Itinerary() {
               <button className="btn" onClick={handleAddEvent} disabled={isSubmitting}>
                 {isSubmitting ? "Adding..." : "Add"}
               </button>
-              <button className="btnCancel" onClick={() => {setNewName(""); setNewDate(""); setNewDescription(""); setPopupOpen(false);}}>
+              <button className="btnCancel" onClick={() => {setNewName(""); setNewDescription(""); setPopupOpen(false);}}>
                 Cancel
               </button>
             </div>
