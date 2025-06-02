@@ -68,6 +68,10 @@
 }
 
 /* API */
+
+.weatherBox p{
+ font-size: 20px;
+}
 .eventsBox {
   margin-top: 2rem;
   padding: 1rem;

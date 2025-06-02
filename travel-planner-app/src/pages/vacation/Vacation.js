@@ -193,13 +193,6 @@ export default function VacationOverview() {
           EDIT VACATION
         </button>
 
-        {weatherSummary && (
-          <div className={styles.weatherBox}>
-            <h3>WEATHER</h3>
-            <p>{weatherSummary}</p>
-          </div>
-        )}
-
         <div className={styles.important}>
           <h3>TO DO</h3>
           {trip.tasks && trip.tasks.filter(t => t.status !== 2).map(t => (
@@ -240,6 +233,14 @@ export default function VacationOverview() {
             <p>No expenses yet</p>
           )}
         </div>
+
+        {weatherSummary && (
+          <div className={styles.weatherBox}>
+            <h3>WEATHER</h3>
+            <p>{weatherSummary}</p>
+          </div>
+        )}
+
       </div>
 
     {editVacation && (
